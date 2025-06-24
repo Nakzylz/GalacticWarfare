@@ -231,9 +231,10 @@ MonoBehaviour:
   flyAtPlayerSpeed: 55
   shootInterval: 2
   shotsToFire: 3
-  spawnSideOffset: 80
+  spawnSideOffset: 70
   stopDistanceFromPlayer: 50
   despawnDistanceBehindCamera: 5
+  maxLifetime: 15
   projectilePrefab: {fileID: 5447955885264671424, guid: 56ae26f5cc45b7a49b50df5fcf429a8f, type: 3}
   shootPoint: {fileID: 1002211238741806361}
 --- !u!114 &4225103133568602484
@@ -249,7 +250,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
-  deathDelay: 0.6
+  deathDelay: 0.5
   deathEffect: {fileID: 4163018424492857933, guid: 7a4dafba55b072242922877df48ee59c, type: 3}
 --- !u!65 &3860503493171064995
 BoxCollider:

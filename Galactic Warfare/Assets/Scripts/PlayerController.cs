@@ -145,6 +145,15 @@ public class PlayerController : MonoBehaviour
                 Instantiate(projectilePrefab, shootOrigin.position, rotation);
                 lastShootTime = Time.time;
             }
+
+            if (hit.collider.CompareTag("Asteroid"))
+            {
+                Vector3 direction = (hit.collider.transform.position - shootOrigin.position).normalized;
+                Quaternion rotation = Quaternion.LookRotation(direction);
+
+                Instantiate(projectilePrefab, shootOrigin.position, rotation);
+                lastShootTime = Time.time;
+            }
         }
         else
         {

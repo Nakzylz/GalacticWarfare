@@ -8,6 +8,8 @@ TagManager:
   - Projectile
   - PlayerProjectile
   - BackWall
+  - Asteroid
+  - DesertRocks
   layers:
   - Default
   - TransparentFX

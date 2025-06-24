@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class Health : MonoBehaviour
@@ -8,6 +10,11 @@ public class Health : MonoBehaviour
     public float health = 100f;
     public float deathDelay = 2f; // Time before loading scene
     public ParticleSystem deathEffect; // Assign in Inspector
+    public Slider healthUI;
+    public Image fillImage;
+    public Color normalColor = Color.green;
+    public Color warningColor = Color.red;
+    public float warningThreshold = 0.3f;
 
     private bool isDead = false;
 
@@ -21,6 +28,14 @@ public class Health : MonoBehaviour
         {
             health -= 10;
         }
+        if (other.gameObject.CompareTag("Asteroid"))
+        {
+            health -= 30;
+        }
+        if (other.gameObject.CompareTag("DesertRocks"))
+        {
+            health -= 500;
+        }
     }
 
     void Update()
@@ -29,6 +44,17 @@ public class Health : MonoBehaviour
         {
             isDead = true;
             StartCoroutine(HandleDeath());
+        }
+        healthUI.value = health;
+        float percent = healthUI.value / healthUI.maxValue;
+
+        if (percent < warningThreshold)
+        {
+            fillImage.color = warningColor;
+        }
+        else
+        {
+            fillImage.color = normalColor;
         }
     }
 
@@ -64,7 +90,8 @@ public class Health : MonoBehaviour
 
         yield return new WaitForSeconds(deathDelay);
 
-        SceneManager.LoadScene(0);
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(currentSceneIndex);
     }
 
 

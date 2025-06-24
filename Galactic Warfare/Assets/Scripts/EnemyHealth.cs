@@ -1,11 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyHealth : MonoBehaviour
 {
     public float health = 100f;
-    public float deathDelay = 2f; // Time before loading scene
+    public float deathDelay = 2f; // Time before destruction
     public ParticleSystem deathEffect; // Assign in Inspector
 
     private bool isDead = false;
@@ -13,6 +12,14 @@ public class EnemyHealth : MonoBehaviour
     void OnCollisionEnter(Collision other)
     {
         if (other.gameObject.CompareTag("Player"))
+        {
+            health -= 100;
+        }
+        if (other.gameObject.CompareTag("Asteroid"))
+        {
+            health -= 100;
+        }
+        if (other.gameObject.CompareTag("DesertRocks"))
         {
             health -= 100;
         }
@@ -26,7 +33,6 @@ public class EnemyHealth : MonoBehaviour
         }
     }
 
-
     void Update()
     {
         if (!isDead && health <= 0)
@@ -38,7 +44,6 @@ public class EnemyHealth : MonoBehaviour
 
     IEnumerator HandleEnemyDeath()
     {
-
         // Disable the MeshRenderer on this GameObject (if any)
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
         if (meshRenderer != null)
@@ -52,17 +57,24 @@ public class EnemyHealth : MonoBehaviour
             child.gameObject.SetActive(false);
         }
 
-        // Instantiate and play particle effect prefab at player's position
+        // Instantiate and play particle effect prefab at enemy's position
         if (deathEffect != null)
         {
             ParticleSystem effectInstance = Instantiate(deathEffect, transform.position, Quaternion.identity);
             effectInstance.Play();
         }
 
+        // Notify spawner that this enemy is dead
+        EnemySpawner spawner = FindObjectOfType<EnemySpawner>();
+        if (spawner != null)
+        {
+            spawner.UnregisterEnemyDeath(gameObject);
+        }
+
         yield return new WaitForSeconds(deathDelay);
 
-        Destroy(this.gameObject);
+        Destroy(gameObject);
     }
-
-
 }
+
+
