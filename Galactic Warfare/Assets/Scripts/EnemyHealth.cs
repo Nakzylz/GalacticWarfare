@@ -7,7 +7,18 @@ public class EnemyHealth : MonoBehaviour
     public float deathDelay = 2f; // Time before destruction
     public ParticleSystem deathEffect; // Assign in Inspector
 
+    [Header("Audio")]
+    public AudioClip explosionSound;
+    private AudioSource audioSource;
+
+
     private bool isDead = false;
+
+    void Start()
+    {
+        audioSource = GetComponent<AudioSource>();
+    }
+
 
     void OnCollisionEnter(Collision other)
     {
@@ -30,6 +41,7 @@ public class EnemyHealth : MonoBehaviour
         if (other.CompareTag("PlayerProjectile"))
         {
             health -= 50;
+            Destroy(other.gameObject);
         }
     }
 
@@ -44,37 +56,40 @@ public class EnemyHealth : MonoBehaviour
 
     IEnumerator HandleEnemyDeath()
     {
-        // Disable the MeshRenderer on this GameObject (if any)
+        // Play explosion sound BEFORE disabling things
+        if (explosionSound != null && audioSource != null)
+        {
+            audioSource.PlayOneShot(explosionSound);
+        }
+
+        // Disable MeshRenderer
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
         if (meshRenderer != null)
-        {
             meshRenderer.enabled = false;
-        }
 
-        // Disable all children GameObjects
+        // Disable all children
         foreach (Transform child in transform)
-        {
             child.gameObject.SetActive(false);
-        }
 
-        // Instantiate and play particle effect prefab at enemy's position
+        // Play particle
         if (deathEffect != null)
         {
             ParticleSystem effectInstance = Instantiate(deathEffect, transform.position, Quaternion.identity);
             effectInstance.Play();
         }
 
-        // Notify spawner that this enemy is dead
-        EnemySpawner spawner = FindObjectOfType<EnemySpawner>();
-        if (spawner != null)
+        // Notify controller to handle despawn
+        EnemyController controller = GetComponent<EnemyController>();
+        if (controller != null)
         {
-            spawner.UnregisterEnemyDeath(gameObject);
+            controller.OnDeath();
         }
 
         yield return new WaitForSeconds(deathDelay);
-
         Destroy(gameObject);
     }
+
+
 }
 
 

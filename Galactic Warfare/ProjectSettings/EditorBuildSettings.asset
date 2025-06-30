@@ -6,12 +6,27 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Main Menu.unity
+    guid: 099c92db141fc584da916ea1a531900d
+  - enabled: 1
     path: Assets/Scenes/Space.unity
     guid: dcabf4aa14ae2c045a4a700ef372b606
+  - enabled: 1
+    path: Assets/Scenes/DeathSceneSpace.unity
+    guid: f0dd2ad7f9399d94bab643afee4c7830
   - enabled: 1
     path: Assets/Scenes/Desert.unity
     guid: ff39d18d647f39d4e857ecb83185f810
   - enabled: 1
-    path: Assets/Scenes/Main Menu.unity
-    guid: 099c92db141fc584da916ea1a531900d
+    path: Assets/Scenes/DeathSceneDesert.unity
+    guid: 09c4e4160e97c2a47bcff6add83fc55e
+  - enabled: 1
+    path: Assets/Scenes/Forest.unity
+    guid: c55237e04dd105a41a7a14fb0902b798
+  - enabled: 1
+    path: Assets/Scenes/DeathSceneForest.unity
+    guid: 73cbce7675a5924448ef5b1e7db492f4
+  - enabled: 1
+    path: Assets/Scenes/EndScene.unity
+    guid: 1c399af5440976147ab3218fe8de8ab6
   m_configObjects: {}

@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3666936434229281578}
   - component: {fileID: 3735383908348019761}
+  - component: {fileID: -5198188983963548965}
   m_Layer: 0
   m_Name: Rock_blank
   m_TagString: Untagged
@@ -24,6 +25,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3433038943220217723}
+  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -35,7 +37,6 @@ Transform:
   - {fileID: 7482310896794905807}
   - {fileID: 5789407923310946816}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!205 &3735383908348019761
 LODGroup:
@@ -72,11 +73,24 @@ LODGroup:
     renderers:
     - renderer: {fileID: 4617094557007876463}
   m_Enabled: 1
+--- !u!114 &-5198188983963548965
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3433038943220217723}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a26fd9428f269184a835f800ceb0280e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &3368086041017704956
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 3666936434229281578}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: f6217fbd585c2bc4dbecd12b9d221879, type: 3}
@@ -132,6 +146,9 @@ PrefabInstance:
       value: rock_lod0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6217fbd585c2bc4dbecd12b9d221879, type: 3}
 --- !u!4 &2969949225073411607 stripped
 Transform:
@@ -148,6 +165,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 3666936434229281578}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 1d69b01776ca17b449072c6dc42ed1b5, type: 3}
@@ -203,6 +221,9 @@ PrefabInstance:
       value: rock_lod4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1d69b01776ca17b449072c6dc42ed1b5, type: 3}
 --- !u!23 &4617094557007876463 stripped
 MeshRenderer:
@@ -219,6 +240,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 3666936434229281578}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: f220d72fe29b5d248b9449b9035cfb09, type: 3}
@@ -274,6 +296,9 @@ PrefabInstance:
       value: rock_lod3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f220d72fe29b5d248b9449b9035cfb09, type: 3}
 --- !u!4 &7482310896794905807 stripped
 Transform:
@@ -290,6 +315,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 3666936434229281578}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: a25fb1614ec76a941a846d873d07a4f3, type: 3}
@@ -345,6 +371,9 @@ PrefabInstance:
       value: rock_lod1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a25fb1614ec76a941a846d873d07a4f3, type: 3}
 --- !u!4 &7594048470428384452 stripped
 Transform:
@@ -361,6 +390,7 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
+    serializedVersion: 3
     m_TransformParent: {fileID: 3666936434229281578}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 39f74da37d1d3e74f843516d4ec25bdd, type: 3}
@@ -416,6 +446,9 @@ PrefabInstance:
       value: rock_lod2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 39f74da37d1d3e74f843516d4ec25bdd, type: 3}
 --- !u!23 &7438097715116554417 stripped
 MeshRenderer:

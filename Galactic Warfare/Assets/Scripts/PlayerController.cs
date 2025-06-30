@@ -5,12 +5,14 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Movement")]
     public float moveSpeed = 5f;
-    public Joystick joystick;
 
     [Header("Dodge")]
     public float dodgeDistance = 3f;
-    public float swipeCooldown = 0.5f;
-    private float lastSwipeTime = -999f;
+    public float doubleTapTime = 0.3f;
+
+    [Header("Audio")]
+    public AudioClip shootSound;
+    private AudioSource audioSource;
 
     [Header("Rotation Limits")]
     public float minX = -5f;
@@ -20,35 +22,41 @@ public class PlayerController : MonoBehaviour
     public GameObject projectilePrefab;
     public Transform shootOrigin;
     public float shootDelay = 0.5f;
-    private float lastShootTime = -999f;
 
+    private float lastShootTime = -999f;
     private Rigidbody rb;
+
+    // Double tap detection
+    private float lastTapTimeA = -1f;
+    private float lastTapTimeD = -1f;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
-        HandleJoystickMovement();
+        HandleKeyboardMovement();
         HandleRotation();
-        CheckSwipeDodge();
+        HandleKeyboardDodge();
         HandleTapShoot();
     }
 
-    void HandleJoystickMovement()
+    void HandleKeyboardMovement()
     {
-        if (joystick == null) return;
+        float moveX = 0f;
 
-        float hInput = joystick.axisValue.x;
-        Vector3 move = new Vector3(hInput * moveSpeed, rb.velocity.y, 0f);
+        if (Input.GetKey(KeyCode.A)) moveX = -1f;
+        if (Input.GetKey(KeyCode.D)) moveX = 1f;
+
+        Vector3 move = new Vector3(moveX * moveSpeed, rb.velocity.y, 0f);
         rb.velocity = move;
     }
 
     void HandleRotation()
     {
-        // Map player's X position to Y rotation from -20° (left) to +20° (right)
         float normalizedX = Mathf.InverseLerp(minX, maxX, transform.position.x);
         float targetYRotation = Mathf.Lerp(-20f, 20f, normalizedX);
 
@@ -56,32 +64,29 @@ public class PlayerController : MonoBehaviour
         transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
     }
 
-    void CheckSwipeDodge()
+    void HandleKeyboardDodge()
     {
-        if (Input.touchCount > 0)
+        if (Input.GetKeyDown(KeyCode.A))
         {
-            Touch touch = Input.GetTouch(0);
-
-            if (touch.phase == TouchPhase.Ended)
-            {
-                if (Time.time - lastSwipeTime < swipeCooldown)
-                    return;
-
-                Vector2 swipe = touch.position - touch.rawPosition;
-
-                if (swipe.magnitude > Screen.dpi * 0.25f)
-                {
-                    Vector3 direction = swipe.x < 0 ? Vector3.left : Vector3.right;
-                    Vector3 targetPosition = transform.position + direction * dodgeDistance;
-
-                    if (targetPosition.x >= minX && targetPosition.x <= maxX)
-                    {
-                        StartCoroutine(FlipRoutine(direction));
-                        lastSwipeTime = Time.time;
-                    }
-                }
-            }
+            if (Time.time - lastTapTimeA < doubleTapTime)
+                TryDodge(Vector3.left);
+            lastTapTimeA = Time.time;
         }
+
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            if (Time.time - lastTapTimeD < doubleTapTime)
+                TryDodge(Vector3.right);
+            lastTapTimeD = Time.time;
+        }
+    }
+
+    void TryDodge(Vector3 direction)
+    {
+        Vector3 targetPos = transform.position + direction * dodgeDistance;
+
+        if (targetPos.x >= minX && targetPos.x <= maxX)
+            StartCoroutine(FlipRoutine(direction));
     }
 
     IEnumerator FlipRoutine(Vector3 direction)
@@ -92,7 +97,6 @@ public class PlayerController : MonoBehaviour
 
         Vector3 startPos = transform.position;
         Vector3 endPos = startPos + direction * dodgeDistance;
-
         float currentYRotation = transform.localEulerAngles.y;
 
         while (t < duration)
@@ -114,54 +118,32 @@ public class PlayerController : MonoBehaviour
 
     void HandleTapShoot()
     {
-        if (Time.time - lastShootTime < shootDelay)
-            return;
+        if (Time.time - lastShootTime < shootDelay) return;
 
         if (Input.GetMouseButtonDown(0))
-        {
             TryShootAtTap(Input.mousePosition);
-        }
 
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
-        {
             TryShootAtTap(Input.GetTouch(0).position);
-        }
     }
 
     void TryShootAtTap(Vector3 tapPosition)
     {
         Ray ray = Camera.main.ScreenPointToRay(tapPosition);
-        Debug.DrawRay(ray.origin, ray.direction * 100f, Color.red, 2f); // Visual debug in Scene view
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            Debug.Log("Raycast hit: " + hit.collider.name + " Tag: " + hit.collider.tag);
-
-            if (hit.collider.CompareTag("Enemy"))
+            if (hit.collider.CompareTag("Enemy") || hit.collider.CompareTag("Asteroid"))
             {
-                Vector3 direction = (hit.collider.transform.position - shootOrigin.position).normalized;
-                Quaternion rotation = Quaternion.LookRotation(direction);
-
-                Instantiate(projectilePrefab, shootOrigin.position, rotation);
+                Vector3 dir = (hit.collider.transform.position - shootOrigin.position).normalized;
+                Instantiate(projectilePrefab, shootOrigin.position, Quaternion.LookRotation(dir));
+                audioSource.PlayOneShot(shootSound);
                 lastShootTime = Time.time;
             }
-
-            if (hit.collider.CompareTag("Asteroid"))
-            {
-                Vector3 direction = (hit.collider.transform.position - shootOrigin.position).normalized;
-                Quaternion rotation = Quaternion.LookRotation(direction);
-
-                Instantiate(projectilePrefab, shootOrigin.position, rotation);
-                lastShootTime = Time.time;
-            }
-        }
-        else
-        {
-            Debug.Log("Raycast missed");
         }
     }
-
 }
+
 
 
 

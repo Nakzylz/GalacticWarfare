@@ -21,6 +21,11 @@ public class PauseScreenBehaviour : MainMenuBehaviour
         SceneManager.LoadScene(SceneManager
         .GetActiveScene().name);
     }
+
+    public void BackToMain()
+    {
+        SceneManager.LoadScene(0);
+    }
     /// <summary>
     /// Will turn our pause menu on or off
     /// </summary>

@@ -91,7 +91,7 @@ public class Health : MonoBehaviour
         yield return new WaitForSeconds(deathDelay);
 
         int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
-        SceneManager.LoadScene(currentSceneIndex);
+        SceneManager.LoadScene(currentSceneIndex + 1);
     }
 
 
